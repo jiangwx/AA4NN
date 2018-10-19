@@ -1,0 +1,68 @@
+#ifndef CNN_H
+#define CNN_H
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <iostream>
+#include <vector>
+#include <memory.h>
+#include <time.h>
+#include <sys/time.h>
+#include <fstream>
+#include <aa.h>
+#include <cblas.h>
+
+enum layer_type {
+    io_,conv_,maxpool_,avgpool_,lrn_,sigmoid_,innerproduct_,batchnorm_,relu_,concat_,softmax_,defualt_
+};
+
+struct layer
+{
+    layer_type type;
+    char name[15];
+    int iw, ih, ic, ow, oh, oc;
+    int k, s, p;
+};
+
+/**********common.cpp************/
+void load_fm(float* fm, layer l, char* Net);
+void load_mean(float *mean, layer l, char* Net);
+void load_weight(float *weight, layer l, char* Net);
+void load_bias(float *bias, layer l, char* Net);
+void generate_fm(float* fm, layer l);
+void generate_weight(float* weight, layer l);
+void show_fm(float* fm, layer l);
+void show_matrix(float* matrix, int M, int N);
+void trans_matrix(float* in, float* out, int M, int N);
+void check_fm(float* fm, layer l, char* Net);
+void AA_check_fm(AAF* fm, layer l, char* Net);
+void AA_save_fm(AAF* fm, layer l, char* Net);
+void AA_add(float* input, AAF *output, layer l);
+/**********Inception_v1.cpp************/
+void AA_googlenet();
+void AA_Darknet19();
+void Darknet19();
+
+void convolution(float *ifm, float *ofm, float *weight, float *bias, layer l);
+void convolution_mm(float *ifm, float *ofm, float *weight, float* bias, layer l);
+void AA_convolution(AAF *ifm, AAF *ofm, float *weight, float *bias, layer l);
+
+void innerproduct(float *ifm, float *ofm, float *weight, float *bias, layer l);
+void AA_innerproduct(AAF *ifm, AAF *ofm, float *weight, float *bias, layer l);
+
+void maxpool(float *ifm, float *ofm, layer l);
+void AA_maxpool(AAF *ifm, AAF *ofm, layer l);
+
+void avgpool(float *ifm, float *ofm, layer l);
+void AA_avgpool(AAF *ifm, AAF *ofm, layer l);
+
+void lrn(float *ifm, float *ofm, int local, float alpha, float beta, layer l);
+void AA_lrn(AAF *ifm, AAF *ofm, int local, float alpha, float beta, layer l);
+
+void relu(float *ifm, float *ofm, layer l);
+void AA_relu(AAF *ifm, AAF *ofm, layer l);
+
+void batchnorm(float* ifm, float* ofm, float* mean, float* variale, float* bias, layer l);
+void AA_batchnorm(AAF* ifm, AAF* ofm, float* mean, float* variale, float* bias, layer l);
+
+#endif //CNN_H

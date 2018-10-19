@@ -1,0 +1,7 @@
+**/.ipynb_checkpoints
+**/cmake-build-debug
+**/.idea/
+**/weights/
+**/blobs/
+*.zip
+*.txt
