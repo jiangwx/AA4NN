@@ -157,9 +157,9 @@ void AA_check_fm(AAF* fm, layer l, char* Net)
     }
 
     if (err > 0)
-        printf("error cnt= %d, %s\n", err, l.name);
+        printf("AA %s %s error cnt= %d\n", Net, l.name, err);
     else
-        printf("AA correct %s \n", l.name);
+        printf("AA %s %s correct \n", Net, l.name);
 
     free(tmp);
 }

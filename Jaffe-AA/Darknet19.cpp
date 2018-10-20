@@ -470,14 +470,146 @@ void AA_Darknet19()
 {
     Darknet_init();
     load_DNet();
-    load_fm(conv16_blob,DNet[conv16], Name);
-    AA_add(conv16_blob,conv16_AA,DNet[conv16]);
+    timeval start,end;
+    gettimeofday(&start, NULL);
+
+    load_fm(pool1_blob,DNet[pool1], Name);
+    AA_add(pool1_blob,pool1_AA,DNet[pool1]);
+
+    std::cout << "AA conv2 ..." << std::endl;
+    AA_conv_bn(pool1_AA, conv2_AA, conv2_weight, conv2_bn, &conv2_bn[DNet[conv2].oc], &conv2_bn[2*DNet[conv2].oc], DNet[conv2]);
+    std::cout << "AA conv2 Done" << std::endl;
+    AA_check_fm(conv2_AA, DNet[conv2], Name);
+    AA_save_fm(conv2_AA, DNet[conv2], Name);
+    std::cout << "save AA conv2 Done" << std::endl;
+
+    std::cout << "AA pool2 ..." << std::endl;
+    AA_maxpool(conv2_AA,pool2_AA,DNet[pool2]);
+    std::cout << "AA pool2 Done" << std::endl;
+    AA_check_fm(pool2_AA, DNet[pool2], Name);
+    AA_save_fm(pool2_AA, DNet[pool2], Name);
+    std::cout << "save AA pool2 Done" << std::endl;
+
+    std::cout << "AA conv3 ..." << std::endl;
+    AA_conv_bn(pool2_AA, conv3_AA, conv3_weight, conv3_bn, &conv3_bn[DNet[conv3].oc], &conv3_bn[2*DNet[conv3].oc], DNet[conv3]);
+    std::cout << "AA conv3 Done" << std::endl;
+    AA_check_fm(conv3_AA, DNet[conv3], Name);
+    AA_save_fm(conv3_AA, DNet[conv3], Name);
+    std::cout << "save AA conv3 Done" << std::endl;
+
+    std::cout << "AA conv4 ..." << std::endl;
+    AA_conv_bn(conv3_AA, conv4_AA, conv4_weight, conv4_bn, &conv4_bn[DNet[conv4].oc], &conv4_bn[2*DNet[conv4].oc], DNet[conv4]);
+    std::cout << "AA conv4 Done" << std::endl;
+    AA_check_fm(conv4_AA, DNet[conv4], Name);
+    AA_save_fm(conv4_AA, DNet[conv4], Name);
+    std::cout << "save AA conv4 Done" << std::endl;
+
+    std::cout << "AA conv5 ..." << std::endl;
+    AA_conv_bn(conv4_AA, conv5_AA, conv5_weight, conv5_bn, &conv5_bn[DNet[conv5].oc], &conv5_bn[2*DNet[conv5].oc], DNet[conv5]);
+    std::cout << "AA conv5 Done" << std::endl;
+    AA_check_fm(conv5_AA, DNet[conv5], Name);
+    AA_save_fm(conv5_AA, DNet[conv5], Name);
+    std::cout << "save AA conv5 Done" << std::endl;
+
+    std::cout << "AA pool5 ..." << std::endl;
+    AA_maxpool(conv5_AA,pool5_AA,DNet[pool5]);
+    std::cout << "AA pool13 Done" << std::endl;
+    AA_check_fm(pool5_AA, DNet[pool5], Name);
+    AA_check_fm(pool5_AA, DNet[pool5], Name);
+
+    std::cout << "AA conv6 ..." << std::endl;
+    AA_conv_bn(pool5_AA, conv6_AA, conv6_weight, conv6_bn, &conv6_bn[DNet[conv6].oc], &conv6_bn[2*DNet[conv6].oc], DNet[conv6]);
+    std::cout << "AA conv6 Done" << std::endl;
+    AA_check_fm(conv6_AA, DNet[conv6], Name);
+    AA_save_fm(conv6_AA, DNet[conv6], Name);
+    std::cout << "Save AA conv6 Done" << std::endl;
+
+    std::cout << "AA conv7 ..." << std::endl;
+    AA_conv_bn(conv6_AA, conv7_AA, conv7_weight, conv7_bn, &conv7_bn[DNet[conv7].oc], &conv7_bn[2*DNet[conv7].oc], DNet[conv7]);
+    std::cout << "AA conv7 Done" << std::endl;
+    AA_check_fm(conv7_AA, DNet[conv7], Name);
+    AA_save_fm(conv7_AA, DNet[conv7], Name);
+    std::cout << "Save AA conv7 Done" << std::endl;
+
+    std::cout << "AA conv8 ..." << std::endl;
+    AA_conv_bn(conv7_AA, conv8_AA, conv8_weight, conv8_bn, &conv8_bn[DNet[conv8].oc], &conv8_bn[2*DNet[conv8].oc], DNet[conv8]);
+    std::cout << "AA conv8 Done" << std::endl;
+    AA_check_fm(conv8_AA, DNet[conv8], Name);
+    AA_save_fm(conv8_AA, DNet[conv8], Name);
+    std::cout << "Save AA conv8 Done" << std::endl;
+
+    std::cout << "AA pool8 ..." << std::endl;
+    AA_maxpool(conv8_AA,pool8_AA,DNet[pool8]);
+    std::cout << "AA pool13 Done" << std::endl;
+    AA_check_fm(pool8_AA, DNet[pool8], Name);
+    AA_save_fm(pool8_AA, DNet[pool8], Name);
+
+    std::cout << "AA conv9 ..." << std::endl;
+    AA_conv_bn(pool8_AA, conv9_AA, conv9_weight, conv9_bn, &conv9_bn[DNet[conv9].oc], &conv9_bn[2*DNet[conv9].oc], DNet[conv9]);
+    std::cout << "AA conv9 Done" << std::endl;
+    AA_check_fm(conv9_AA, DNet[conv9], Name);
+    AA_save_fm(conv9_AA, DNet[conv9], Name);
+    std::cout << "Save AA conv9 Done" << std::endl;
+
+    std::cout << "AA conv10 ..." << std::endl;
+    AA_conv_bn(conv9_AA, conv10_AA, conv10_weight, conv10_bn, &conv10_bn[DNet[conv10].oc], &conv10_bn[2*DNet[conv10].oc], DNet[conv10]);
+    std::cout << "AA conv10 Done" << std::endl;
+    AA_check_fm(conv10_AA, DNet[conv10], Name);
+    AA_save_fm(conv10_AA, DNet[conv10], Name);
+    std::cout << "Save AA conv10 Done" << std::endl;
+
+    std::cout << "AA conv11 ..." << std::endl;
+    AA_conv_bn(conv10_AA, conv11_AA, conv11_weight, conv11_bn, &conv11_bn[DNet[conv11].oc], &conv11_bn[2*DNet[conv11].oc], DNet[conv11]);
+    std::cout << "AA conv11 Done" << std::endl;
+    AA_check_fm(conv11_AA, DNet[conv11], Name);
+    AA_save_fm(conv11_AA, DNet[conv11], Name);
+    std::cout << "Save AA conv11 Done" << std::endl;
+
+    std::cout << "AA conv12 ..." << std::endl;
+    AA_conv_bn(conv11_AA, conv12_AA, conv12_weight, conv12_bn, &conv12_bn[DNet[conv12].oc], &conv12_bn[2*DNet[conv12].oc], DNet[conv12]);
+    std::cout << "AA conv12 Done" << std::endl;
+    AA_check_fm(conv12_AA, DNet[conv12], Name);
+    AA_save_fm(conv12_AA, DNet[conv12], Name);
+    std::cout << "Save AA conv12 Done" << std::endl;
+
+    std::cout << "AA conv13 ..." << std::endl;
+    AA_conv_bn(conv12_AA, conv13_AA, conv13_weight, conv13_bn, &conv13_bn[DNet[conv13].oc], &conv13_bn[2*DNet[conv13].oc], DNet[conv13]);
+    std::cout << "AA conv13 Done" << std::endl;
+    AA_check_fm(conv13_AA, DNet[conv13], Name);
+    AA_save_fm(conv13_AA, DNet[conv13], Name);
+    std::cout << "Save AA conv13 Done" << std::endl;
+
+    std::cout << "AA pool13 ..." << std::endl;
+    AA_maxpool(conv13_AA,pool13_AA,DNet[pool13]);
+    std::cout << "AA pool13 Done" << std::endl;
+    AA_check_fm(pool13_AA, DNet[pool13], Name);
+
+    std::cout << "AA conv14 ..." << std::endl;
+    AA_conv_bn(pool13_AA, conv14_AA, conv14_weight, conv14_bn, &conv14_bn[DNet[conv14].oc], &conv14_bn[2*DNet[conv14].oc], DNet[conv14]);
+    std::cout << "AA conv14 Done" << std::endl;
+    AA_check_fm(conv14_AA, DNet[conv14], Name);
+    AA_save_fm(conv14_AA, DNet[conv14], Name);
+    std::cout << "Save AA conv14 Done" << std::endl;
+
+    std::cout << "AA conv15 ..." << std::endl;
+    AA_conv_bn(conv14_AA, conv15_AA, conv15_weight, conv15_bn, &conv15_bn[DNet[conv15].oc], &conv15_bn[2*DNet[conv15].oc], DNet[conv15]);
+    std::cout << "AA conv15 Done" << std::endl;
+    AA_check_fm(conv15_AA, DNet[conv15], Name);
+    AA_save_fm(conv15_AA, DNet[conv15], Name);
+    std::cout << "Save AA conv15 Done" << std::endl;
+
+    std::cout << "AA conv16 ..." << std::endl;
+    AA_conv_bn(conv15_AA, conv16_AA, conv16_weight, conv16_bn, &conv16_bn[DNet[conv16].oc], &conv16_bn[2*DNet[conv16].oc], DNet[conv16]);
+    std::cout << "AA conv16 Done" << std::endl;
+    AA_check_fm(conv16_AA, DNet[conv16], Name);
+    AA_save_fm(conv16_AA, DNet[conv16], Name);
+    std::cout << "Save AA conv16 Done" << std::endl;
 
     std::cout << "AA conv17 ..." << std::endl;
     AA_conv_bn(conv16_AA, conv17_AA, conv17_weight, conv17_bn, &conv17_bn[DNet[conv17].oc], &conv17_bn[2*DNet[conv17].oc], DNet[conv17]);
     std::cout << "AA conv17 Done" << std::endl;
     AA_save_fm(conv17_AA, DNet[conv17], Name);
-    std::cout << "save AA conv17 Done" << std::endl;
+    std::cout << "Save AA conv17 Done" << std::endl;
 
     float* zeros = (float*)calloc(DNet[conv18].oc,sizeof(float));
     std::cout << "AA conv18 ..." << std::endl;
@@ -493,48 +625,7 @@ void AA_Darknet19()
 
     AA_save_fm(pool18_AA, DNet[pool18], Name);
     std::cout << "save AA pool18 Done" << std::endl;
+    gettimeofday(&end, NULL);
+    long s = end.tv_sec - start.tv_sec;
+    printf("Darknet19 took %lu s\n", s);
 }
-/*
- *     Darknet_init();
-    load_DNet();
-    //load_fm(image_blob,DNet[image], Name);
-    //conv_bn(image_blob, conv1_blob, conv1_weight, conv1_bn, &conv1_bn[DNet[conv1].oc], &conv1_bn[2*DNet[conv1].oc], DNet[conv1]);
-    //load_fm(conv1_blob,DNet[conv1], Name);
-    //AA_add(conv1_blob,conv1_AA,DNet[conv1]);
-    //AA_maxpool(conv1_AA,pool1_AA,DNet[pool1]);
-    //AA_check_fm(pool1_AA,DNet[pool1], Name);
-
-    //load_fm(pool1_blob,DNet[pool1], Name);
-    //AA_add(pool1_blob,pool1_AA,DNet[pool1]);
-    //AA_conv_bn(pool1_AA, conv2_AA, conv2_weight, conv2_bn, &conv2_bn[DNet[conv2].oc], &conv2_bn[2*DNet[conv2].oc], DNet[conv2]);
-    //AA_check_fm(conv2_AA,DNet[conv2], Name);
-    //load_fm(conv2_blob,DNet[conv2], Name);
-    //AA_add(conv2_blob,conv2_AA,DNet[conv2]);
-    //AA_maxpool(conv2_AA,pool2_AA,DNet[pool2]);
-    //AA_check_fm(pool2_AA,DNet[pool2], Name);
-
-
-    conv_bn(pool2_blob, conv3_blob, conv3_weight, conv3_bn, &conv3_bn[DNet[conv3].oc], &conv3_bn[2*DNet[conv3].oc], DNet[conv3]);
-
-
-    conv_bn(conv3_blob, conv4_blob, conv4_weight, conv4_bn, &conv4_bn[DNet[conv4].oc], &conv4_bn[2*DNet[conv4].oc], DNet[conv4]);
-    conv_bn(conv4_blob, conv5_blob, conv5_weight, conv5_bn, &conv5_bn[DNet[conv5].oc], &conv5_bn[2*DNet[conv5].oc], DNet[conv5]);
-    maxpool(conv5_blob,pool5_blob,DNet[pool5]);
-    conv_bn(pool5_blob, conv6_blob, conv6_weight, conv6_bn, &conv6_bn[DNet[conv6].oc], &conv6_bn[2*DNet[conv6].oc], DNet[conv6]);
-    conv_bn(conv6_blob, conv7_blob, conv7_weight, conv7_bn, &conv7_bn[DNet[conv7].oc], &conv7_bn[2*DNet[conv7].oc], DNet[conv7]);
-    conv_bn(conv7_blob, conv8_blob, conv8_weight, conv8_bn, &conv8_bn[DNet[conv8].oc], &conv8_bn[2*DNet[conv8].oc], DNet[conv8]);
-    maxpool(conv8_blob,pool8_blob,DNet[pool8]);
-    conv_bn(pool8_blob, conv9_blob, conv9_weight, conv9_bn, &conv9_bn[DNet[conv9].oc], &conv9_bn[2*DNet[conv9].oc], DNet[conv9]);
-    conv_bn(conv9_blob, conv10_blob, conv10_weight, conv10_bn, &conv10_bn[DNet[conv10].oc], &conv10_bn[2*DNet[conv10].oc], DNet[conv10]);
-    conv_bn(conv10_blob, conv11_blob, conv11_weight, conv11_bn, &conv11_bn[DNet[conv11].oc], &conv11_bn[2*DNet[conv11].oc], DNet[conv11]);
-    conv_bn(conv11_blob, conv12_blob, conv12_weight, conv12_bn, &conv12_bn[DNet[conv12].oc], &conv12_bn[2*DNet[conv12].oc], DNet[conv12]);
-    conv_bn(conv12_blob, conv13_blob, conv13_weight, conv13_bn, &conv13_bn[DNet[conv13].oc], &conv13_bn[2*DNet[conv13].oc], DNet[conv13]);
-    maxpool(conv13_blob,pool13_blob,DNet[pool13]);
-    conv_bn(pool13_blob, conv14_blob, conv14_weight, conv14_bn, &conv14_bn[DNet[conv14].oc], &conv14_bn[2*DNet[conv14].oc], DNet[conv14]);
-    conv_bn(conv14_blob, conv15_blob, conv15_weight, conv15_bn, &conv15_bn[DNet[conv15].oc], &conv15_bn[2*DNet[conv15].oc], DNet[conv15]);
-    conv_bn(conv15_blob, conv16_blob, conv16_weight, conv16_bn, &conv16_bn[DNet[conv16].oc], &conv16_bn[2*DNet[conv16].oc], DNet[conv16]);
-    conv_bn(conv16_blob, conv17_blob, conv17_weight, conv17_bn, &conv17_bn[DNet[conv17].oc], &conv17_bn[2*DNet[conv17].oc], DNet[conv17]);
-    float* zeros = (float*)calloc(DNet[conv18].oc,sizeof(float));
-    convolution(conv17_blob,conv18_blob,conv18_weight,zeros,DNet[conv18]);
-    avgpool(conv18_blob,pool18_blob,DNet[pool18]);
-    check_fm(pool18_blob, DNet[pool18], Name);*/

@@ -5,3 +5,4 @@
 **/blobs/
 *.zip
 *.txt
+!CMakeLists.txt

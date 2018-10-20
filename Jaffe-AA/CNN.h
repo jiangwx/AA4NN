@@ -12,7 +12,8 @@
 #include <aa.h>
 #include <cblas.h>
 
-enum layer_type {
+enum layer_type 
+{
     io_,conv_,maxpool_,avgpool_,lrn_,sigmoid_,innerproduct_,batchnorm_,relu_,concat_,softmax_,defualt_
 };
 
