@@ -98,6 +98,8 @@ void avgpool(float *ifm, float *ofm, layer l)
 
 void AA_avgpool(AAF *ifm, AAF *ofm, layer l)
 {
+    int kernel_size=l.k * l.k;
+    float _kernel_size=1/(float)kernel_size;
     for (int oc = 0; oc < l.oc; oc++)
     {
         for (int oh = 0; oh < l.oh; oh++)
@@ -105,6 +107,7 @@ void AA_avgpool(AAF *ifm, AAF *ofm, layer l)
             for (int ow = 0; ow < l.ow; ow++)
             {
                 AAF odata = 0;
+                AAF odata_temp = 0;
                 for(int kh=0;kh<l.k;kh++)
                 {
                     for(int kw=0;kw<l.k;kw++)
@@ -122,7 +125,8 @@ void AA_avgpool(AAF *ifm, AAF *ofm, layer l)
                         odata = odata + ret;
                     }
                 }
-                ofm[oc * l.oh * l.ow + oh * l.ow + ow] = odata / (l.k*l.k);
+                odata_temp = odata*_kernel_size;
+                ofm[oc * l.oh * l.ow + oh * l.ow + ow] = odata_temp;
             }
         }
     }

@@ -622,7 +622,6 @@ void AA_Darknet19()
     AA_avgpool(conv18_AA,pool18_AA,DNet[pool18]);
     std::cout << "AA pool18 Done" << std::endl;
     AA_check_fm(pool18_AA, DNet[pool18], Name);
-
     AA_save_fm(pool18_AA, DNet[pool18], Name);
     std::cout << "save AA pool18 Done" << std::endl;
     gettimeofday(&end, NULL);
