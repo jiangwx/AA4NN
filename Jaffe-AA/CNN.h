@@ -11,6 +11,14 @@
 #include <fstream>
 #include <aa.h>
 #include <cblas.h>
+#include <cstring>
+
+#include <opencv2/opencv.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/highgui/highgui.hpp>
+
+#define img_w 224
+#define img_h 224
 
 enum layer_type 
 {
@@ -26,6 +34,8 @@ struct layer
 };
 
 /**********common.cpp************/
+void load_image(char* img_path, float* blob,float* mean);
+void load_mean_image(char* img_path, float* blob);
 void load_fm(float* fm, layer l, char* Net);
 void load_mean(float *mean, layer l, char* Net);
 void load_weight(float *weight, layer l, char* Net);
@@ -39,10 +49,10 @@ void check_fm(float* fm, layer l, char* Net);
 void AA_check_fm(AAF* fm, layer l, char* Net);
 void AA_save_fm(AAF* fm, layer l, char* Net);
 void AA_add(float* input, AAF *output, layer l);
+
 /**********Inception_v1.cpp************/
 void AA_googlenet();
-void AA_Darknet19();
-void Darknet19();
+
 
 void convolution(float *ifm, float *ofm, float *weight, float *bias, layer l);
 void convolution_mm(float *ifm, float *ofm, float *weight, float* bias, layer l);

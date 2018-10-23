@@ -1,6 +1,46 @@
 #include "CNN.h"
 #define CheckScale 0.01
 
+void load_image(char* img_path, float* blob,float* mean)
+{
+    IplImage *src = cvLoadImage(img_path);
+    CvSize size;
+    size.width = img_w;
+    size.height = img_h;
+    IplImage *dst = cvCreateImage(size, IPL_DEPTH_8U, 3);
+    cvResize(src, dst, CV_INTER_CUBIC);
+
+    unsigned char *data = (unsigned char *) dst->imageData;
+
+    for (int i = 0; i < dst->height; i++) {
+        for (int j = 0; j < dst->width; j++) {
+            blob[i * dst->widthStep / 3 + j]                 = (float) data[i * dst->widthStep + j *  dst->nChannels]-mean[i * dst->widthStep / 3 + j];
+            blob[i * dst->widthStep / 3 + j + img_w*img_h]   = (float) data[i * dst->widthStep + j *  dst->nChannels + 1]-mean[i * dst->widthStep / 3 + j+ img_w*img_h];
+            blob[i * dst->widthStep / 3 + j + 2*img_w*img_h] = (float) data[i * dst->widthStep + j *  dst->nChannels + 2]-mean[i * dst->widthStep / 3 + j + 2*img_w*img_h];
+        }
+    }
+}
+
+void load_mean_image(char* img_path, float* blob)
+{
+    IplImage *src = cvLoadImage(img_path);
+    CvSize size;
+    size.width = img_w;
+    size.height = img_h;
+    IplImage *dst = cvCreateImage(size, IPL_DEPTH_8U, 3);
+    cvResize(src, dst, CV_INTER_CUBIC);
+
+    unsigned char *data = (unsigned char *) dst->imageData;
+
+    for (int i = 0; i < dst->height; i++) {
+        for (int j = 0; j < dst->width; j++) {
+            blob[i * dst->widthStep / 3 + j]                 = (float) data[i * dst->widthStep + j *  dst->nChannels]-127;
+            blob[i * dst->widthStep / 3 + j + img_w*img_h]   = (float) data[i * dst->widthStep + j *  dst->nChannels + 1]-127;
+            blob[i * dst->widthStep / 3 + j + 2*img_w*img_h] = (float) data[i * dst->widthStep + j *  dst->nChannels + 2]-127;
+        }
+    }
+}
+
 void load_fm(float* fm, layer l, char* Net)
 {
     char nstr[50];

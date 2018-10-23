@@ -1,5 +1,4 @@
-#include "CNN.h"
-
+#include "Darknet19.h"
 layer DNet[26] = {
         { conv_,"image",     224,224,3,224,224,3,0,0,0 },
         { conv_,"conv1",     224,224,3,224,224,32,3,1,1 },
@@ -142,6 +141,21 @@ void AA_conv_bn(AAF* ifm, AAF* ofm, float* weight, float* Mean, float* Variale, 
     AA_batchnorm(conv_blob, ofm, Mean, Variale, Bias, l);
     delete []conv_blob;
     free(zeros);
+}
+
+int max(float *in,layer l)
+{
+    int index = 0;
+    float tmp=in[0];
+    for (int i = 1; i < l.oc; i++)
+    {
+        if (in[i] > tmp)
+        {
+            index = i;
+            tmp = in[i];
+        }
+    }
+    return index;
 }
 
 void Darknet_init()
@@ -427,18 +441,14 @@ void load_DNet()
 
 }
 
-void Darknet19()
+int Darknet19(float* input)
 {
-    Darknet_init();
-    load_DNet();
-    load_fm(image_blob,DNet[image], Name);
     timeval start,end;
     gettimeofday(&start, NULL);
-    conv_bn(image_blob, conv1_blob, conv1_weight, conv1_bn, &conv1_bn[DNet[conv1].oc], &conv1_bn[2*DNet[conv1].oc], DNet[conv1]);
+    conv_bn(input, conv1_blob, conv1_weight, conv1_bn, &conv1_bn[DNet[conv1].oc], &conv1_bn[2*DNet[conv1].oc], DNet[conv1]);
     maxpool(conv1_blob,pool1_blob,DNet[pool1]);
     conv_bn(pool1_blob, conv2_blob, conv2_weight, conv2_bn, &conv2_bn[DNet[conv2].oc], &conv2_bn[2*DNet[conv2].oc], DNet[conv2]);
     maxpool(conv2_blob,pool2_blob,DNet[pool2]);
-    load_fm(pool2_blob,DNet[pool2], Name);
     conv_bn(pool2_blob, conv3_blob, conv3_weight, conv3_bn, &conv3_bn[DNet[conv3].oc], &conv3_bn[2*DNet[conv3].oc], DNet[conv3]);
     conv_bn(conv3_blob, conv4_blob, conv4_weight, conv4_bn, &conv4_bn[DNet[conv4].oc], &conv4_bn[2*DNet[conv4].oc], DNet[conv4]);
     conv_bn(conv4_blob, conv5_blob, conv5_weight, conv5_bn, &conv5_bn[DNet[conv5].oc], &conv5_bn[2*DNet[conv5].oc], DNet[conv5]);
@@ -460,10 +470,11 @@ void Darknet19()
     float* zeros = (float*)calloc(DNet[conv18].oc,sizeof(float));
     convolution(conv17_blob,conv18_blob,conv18_weight,zeros,DNet[conv18]);
     avgpool(conv18_blob,pool18_blob,DNet[pool18]);
+    int label = max(pool18_blob, DNet[pool18]);
     gettimeofday(&end, NULL);
-    check_fm(pool18_blob, DNet[pool18], Name);
     long us = (end.tv_sec - start.tv_sec)*1000000 + (end.tv_usec - start.tv_usec);
     printf("Darknet19 took %lu us\n", us);
+    return label;
 }
 
 void AA_Darknet19()
