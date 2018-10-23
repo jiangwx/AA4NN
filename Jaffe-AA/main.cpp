@@ -74,7 +74,7 @@ int main(int argc, char **argv)
     for(int i=1;i<TEST+1;i++) {
         sprintf(image_path, "%s/%08d.jpg", image_folder, i);
         load_image(image_path, image, mean);
-        label = Darknet19(image);
+        label = AA_Darknet19(image,image_path);
         printf("%08d.jpg %s\n", i, synset[label]);
     }
     Darknet_close();

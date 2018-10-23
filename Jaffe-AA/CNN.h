@@ -49,7 +49,7 @@ void check_fm(float* fm, layer l, char* Net);
 void AA_check_fm(AAF* fm, layer l, char* Net);
 void AA_save_fm(AAF* fm, layer l, char* Net);
 void AA_add(float* input, AAF *output, layer l);
-
+void AA_remove(AAF *input, float* output, layer l);
 /**********Inception_v1.cpp************/
 void AA_googlenet();
 

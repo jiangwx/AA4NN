@@ -19,3 +19,14 @@ void AA_add(float* input, AAF *output, layer l)
     }
 }
 
+void AA_remove(AAF *input, float* output, layer l)
+{
+    for(int i = 0; i < l.oc; i++)
+    {
+        for(int j = 0; j < l.ow*l.oh; j++)
+        {
+            output[i*l.ow*l.oh+j] = (float)input[i*l.ow*l.oh+j].get_center();
+        }
+    }
+}
+
