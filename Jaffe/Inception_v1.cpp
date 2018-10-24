@@ -115,25 +115,35 @@ enum GNet_idx {
     incep5b11, incep5b33re, incep5b33, incep5b55re, incep5b55, incep5bpo, incep5bpp, incep5b,
     pool5drops, cvgclassifier, cvgsig, bboxes
 };
+/*
+static char Name[]="Googlenet";
 
-float* image_blob;
-float* conv177_output;
-float* conv177relu_output;
-float* conv177_weight;
-float* conv177_bias;
-float* pool133_output;
-float* pool1norm_output;
-float* conv233re_output;
-float* conv233rerelu_output;
-float* conv233re_weight;
-float* conv233re_bias;
-float* conv233_output;
-float* conv233relu_output;
-float* conv233_weight;
-float* conv233_bias;
-float* conv2norm_output;
-float* pool233_output;
-std::vector<float*> Googlenet;
+static float* image_blob;
+static float* conv177_output;
+static float* conv177relu_output;
+static AAF* conv177relu_output_AA;
+static float* conv177_weight;
+static float* conv177_bias;
+static float* pool133_output;
+static AAF* pool133_output_AA;
+static float* pool1norm_output;
+static AAF* pool1norm_output_AA;
+static float* conv233re_output;
+static AAF* conv233re_output_AA;
+static float* conv233rerelu_output;
+static AAF* conv233rerelu_output_AA;
+static float* conv233re_weight;
+static float* conv233re_bias;
+static float* conv233_output;
+static AAF* conv233_output_AA;
+static float* conv233relu_output;
+static AAF* conv233relu_output_AA;
+static float* conv233_weight;
+static float* conv233_bias;
+static float* conv2norm_output;
+static AAF* conv2norm_output_AA;
+static float* pool233_output;
+static AAF* pool233_output_AA;
 
 void init_gnet()
 {
@@ -158,72 +168,99 @@ void init_gnet()
 
 
     image_blob = (float*)calloc(GNet[image].oc*GNet[image].oh*GNet[image].ow,sizeof(float));
+
     conv177_output = (float*)calloc(GNet[conv177].oc*GNet[conv177].oh*GNet[conv177].ow,sizeof(float));
     conv177relu_output = (float*)calloc(GNet[conv177].oc*GNet[conv177].oh*GNet[conv177].ow,sizeof(float));
+    conv177relu_output_AA = new AAF[GNet[conv177].oc*GNet[conv177].oh*GNet[conv177].ow];
     conv177_weight = (float*)calloc(GNet[conv177].ic*GNet[conv177].oc*GNet[conv177].k*GNet[conv177].k,sizeof(float));
     conv177_bias = (float*)calloc(GNet[conv177].oc,sizeof(float));
+
     pool133_output = (float*)calloc(GNet[pool133].oc*GNet[pool133].oh*GNet[pool133].ow,sizeof(float));
+    pool133_output_AA = new AAF[GNet[pool133].oc*GNet[pool133].oh*GNet[pool133].ow];
     pool1norm_output = (float*)calloc(GNet[pool1norm].oc*GNet[pool1norm].oh*GNet[pool1norm].ow,sizeof(float));
+    pool1norm_output_AA = new AAF[GNet[pool1norm].oc*GNet[pool1norm].oh*GNet[pool1norm].ow];
+
     conv233re_output = (float*)calloc(GNet[conv233re].oc*GNet[conv233re].oh*GNet[conv233re].ow,sizeof(float));
+    conv233re_output_AA = new AAF[GNet[conv233re].oc*GNet[conv233re].oh*GNet[conv233re].ow];
     conv233rerelu_output = (float*)calloc(GNet[conv233re].oc*GNet[conv233re].oh*GNet[conv233re].ow,sizeof(float));
+    conv233rerelu_output_AA = new AAF[GNet[conv233re].oc*GNet[conv233re].oh*GNet[conv233re].ow];
     conv233re_weight = (float*)calloc(GNet[conv233re].ic*GNet[conv233re].oc*GNet[conv233re].k*GNet[conv233re].k,sizeof(float));
     conv233re_bias = (float*)calloc(GNet[conv233re].oc,sizeof(float));
 
     conv233_output = (float*)calloc(GNet[conv233].oc*GNet[conv233].oh*GNet[conv233].ow,sizeof(float));
+    conv233_output_AA = new AAF[GNet[conv233].oc*GNet[conv233].oh*GNet[conv233].ow];
     conv233relu_output = (float*)calloc(GNet[conv233].oc*GNet[conv233].oh*GNet[conv233].ow,sizeof(float));
+    conv233relu_output_AA = new AAF[GNet[conv233].oc*GNet[conv233].oh*GNet[conv233].ow];
     conv233_weight = (float*)calloc(GNet[conv233].ic*GNet[conv233].oc*GNet[conv233].k*GNet[conv233].k,sizeof(float));
     conv233_bias = (float*)calloc(GNet[conv233].oc,sizeof(float));
+
     conv2norm_output = (float*)calloc(GNet[conv2norm].oc*GNet[conv2norm].oh*GNet[conv2norm].ow,sizeof(float));
+    conv2norm_output_AA = new AAF[GNet[conv2norm].oc*GNet[conv2norm].oh*GNet[conv2norm].ow];
+
     pool233_output = (float*)calloc(GNet[pool233].oc*GNet[pool233].oh*GNet[pool233].ow,sizeof(float));
+    pool233_output_AA = new AAF[GNet[pool233].oc*GNet[pool233].oh*GNet[pool233].ow];
 }
 
 void load_gnet()
 {
-    load_weight(conv177_weight,GNet[conv177]);
-    load_bias(conv177_bias,GNet[conv177]);
+    load_weight(conv177_weight,GNet[conv177], Name);
+    load_bias(conv177_bias,GNet[conv177], Name);
 
-    load_weight(conv233re_weight,GNet[conv233re]);
-    load_bias(conv233re_bias,GNet[conv233re]);
+    load_weight(conv233re_weight,GNet[conv233re], Name);
+    load_bias(conv233re_bias,GNet[conv233re], Name);
 
-    load_weight(conv233_weight,GNet[conv233]);
-    load_bias(conv233_bias,GNet[conv233]);
+    load_weight(conv233_weight,GNet[conv233], Name);
+    load_bias(conv233_bias,GNet[conv233], Name);
 }
 
-void googlenet()
+void AA_googlenet()
 {
     timeval start,end;
     init_gnet();
     std::cout << "init googlenet" << std::endl;
     load_gnet();
 
-    load_fm(image_blob,GNet[image]);
-    convolution_mm(image_blob,conv177_output,conv177_weight,conv177_bias,GNet[conv177]);
-    relu(conv177_output,conv177relu_output,GNet[conv177]);
+    //load_fm(image_blob,GNet[image]);
+    //convolution(image_blob,conv177_output,conv177_weight,conv177_bias,GNet[conv177]);
+    //relu(conv177_output,conv177relu_output,GNet[conv177]);
     //check_fm(conv177relu_output,GNet[conv177]);
-    maxpool(conv177relu_output,pool133_output,GNet[pool133]);
-    //check_fm(pool133_output,GNet[pool133]);
-    lrn(pool133_output,pool1norm_output,5,0.0001,0.75,GNet[pool1norm]);
-    //check_fm(pool1norm_output,GNet[pool1norm]);
-    convolution_mm(pool1norm_output,conv233re_output,conv233re_weight,conv233re_bias,GNet[conv233re]);
-    relu(conv233re_output,conv233rerelu_output,GNet[conv233re]);
-    //check_fm(conv233rerelu_output,GNet[conv233re]);
-    convolution_mm(conv233rerelu_output,conv233_output,conv233_weight,conv233_bias,GNet[conv233]);
-    relu(conv233_output,conv233relu_output,GNet[conv233]);
-    //check_fm(conv233relu_output,GNet[conv233]);
-    lrn(conv233relu_output,conv2norm_output,5,0.0001,0.75,GNet[conv2norm]);
-    maxpool(conv2norm_output,pool233_output,GNet[pool233]);
-    check_fm(pool233_output,GNet[pool233]);
-}
-/*
-    gettimeofday(&start, NULL);
-    convolution_mm(image_blob,conv177_output,conv177_weight,conv177_bias,GNet[conv177]);
-    gettimeofday(&end, NULL);
-    long us = (end.tv_sec - start.tv_sec)*1000000 + (end.tv_usec - start.tv_usec);
-    printf("convolution took %lu us\n", us);
 
-    gettimeofday(&start, NULL);
-    convolution_mm(image_blob,conv177_output,conv177_weight,conv177_bias,GNet[conv177]);
-    gettimeofday(&end, NULL);
-    us = (end.tv_sec - start.tv_sec)*1000000 + (end.tv_usec - start.tv_usec);
-    printf("gemm took %lu us\n", us);
- */
+    load_fm(conv177relu_output,GNet[conv177],Name);
+    AA_add(conv177relu_output,conv177relu_output_AA,GNet[conv177]);
+    AA_maxpool(conv177relu_output_AA,pool133_output_AA,GNet[pool133]);
+    std::cout << "pool133 over" << std::endl;
+    AA_check_fm(pool133_output_AA,GNet[pool133],Name);
+    AA_save_fm(pool133_output_AA,GNet[pool133],Name);
+
+    //load_fm(pool133_output,GNet[pool133]);
+    //AA_add(pool133_output,pool133_output_AA,GNet[pool133]);
+    AA_lrn(pool133_output_AA,pool1norm_output_AA,5,0.0001,0.75,GNet[pool1norm]);
+    std::cout << "pool1norm over" << std::endl;
+    //AA_check_fm(pool1norm_output_AA,GNet[pool1norm]);
+
+    load_fm(pool1norm_output,GNet[pool1norm],Name);
+    AA_add(pool1norm_output,pool1norm_output_AA,GNet[pool1norm]);
+    AA_convolution(pool1norm_output_AA,conv233re_output_AA,conv233re_weight,conv233re_bias,GNet[conv233re]);
+    std::cout << "conv233re over" << std::endl;
+    AA_relu(conv233re_output_AA,conv233rerelu_output_AA,GNet[conv233re]);
+    std::cout << "conv233rerelu over" << std::endl;
+    //AA_check_fm(conv233rerelu_output_AA,GNet[conv233re],Name);
+    //AA_save_fm(conv233rerelu_output_AA,GNet[conv233re],Name);
+
+    //load_fm(conv233rerelu_output,GNet[conv233re]);
+    //AA_add(conv233rerelu_output,conv233rerelu_output_AA,GNet[conv233re]);
+    AA_convolution(conv233rerelu_output_AA,conv233_output_AA,conv233_weight,conv233_bias,GNet[conv233]);
+    std::cout << "conv233 over" << std::endl;
+    AA_relu(conv233_output_AA,conv233relu_output_AA,GNet[conv233]);
+    std::cout << "conv233relu over" << std::endl;
+    //AA_check_fm(conv233relu_output_AA,GNet[conv233]);
+
+
+    //load_fm(conv233relu_output,GNet[conv233]);
+    //AA_add(conv233relu_output,conv233relu_output_AA,GNet[conv233]);
+    AA_lrn(conv233relu_output_AA,conv2norm_output_AA,5,0.0001,0.75,GNet[conv2norm]);
+    AA_maxpool(conv2norm_output_AA,pool233_output_AA,GNet[pool233]);
+    AA_check_fm(pool233_output_AA,GNet[pool233],Name);
+    AA_save_fm(pool233_output_AA,GNet[pool233],Name);
+}
+*/

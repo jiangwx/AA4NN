@@ -19,7 +19,7 @@ void maxpool(float *ifm, float *ofm, layer l)
                         int fm_index = oc * l.ih * l.iw + fh * l.iw + fw;
 
                         if ((fw < 0) || (fw >(l.iw - 1)) || (fh < 0) || (fh >(l.ih - 1)))
-                            ret = 0;
+                            ret = 34000000;
                         else
                             ret = ifm[fm_index];
 
@@ -31,6 +31,7 @@ void maxpool(float *ifm, float *ofm, layer l)
         }
     }
 }
+
 
 void avgpool(float *ifm, float *ofm, layer l)
 {
@@ -55,7 +56,7 @@ void avgpool(float *ifm, float *ofm, layer l)
                         else
                             ret = ifm[fm_index];
 
-                        odata += ret;
+                        odata = odata + ret;
                     }
                 }
                 ofm[oc * l.oh * l.ow + oh * l.ow + ow] = odata / (l.k*l.k);

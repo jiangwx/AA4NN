@@ -22,10 +22,20 @@ void fm2mm(float *fm, float *mm, layer l)
                             mm[mm_index_t]=0;
                         else
                             mm[mm_index_t]=fm[fm_index];
-
                     }
                 }
             }
+        }
+    }
+}
+
+void add_bias(float *ifm, float *ofm, float *bias, layer l)
+{
+    for (int oc = 0; oc < l.oc; oc++)
+    {
+        for (int i = 0; i < l.ow*l.oh; i++)
+        {
+            ofm[oc*l.ow*l.oh + i] = ifm[oc*l.ow*l.oh + i] + bias[oc];
         }
     }
 }
@@ -42,23 +52,13 @@ void gemm(float *im, float *weight, float* om, layer l)
     int ldc=N;//C的列
 
     cblas_sgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, M, N, K, alpha, weight, lda, im, ldb, beta, om, ldc);
-}
 
-void add_bias(float *ifm, float *ofm, float *bias, layer l)
-{
-    for (int oc = 0; oc < l.oc; oc++)
-    {
-        for (int i = 0; i < l.ow*l.oh; i++)
-        {
-            ofm[oc*l.ow*l.oh + i] = ifm[oc*l.ow*l.oh + i] + bias[oc];
-        }
-    }
 }
 
 void convolution_mm(float *ifm, float *ofm, float *weight, float *bias, layer l)
 {
     float* om=(float*)calloc(l.oh*l.ow*l.oc, sizeof(float));
-    if(l.k == 1)
+    if(l.k==1)
     {
         gemm(ifm,weight,om,l);
     }
@@ -70,5 +70,4 @@ void convolution_mm(float *ifm, float *ofm, float *weight, float *bias, layer l)
         free(im);
     }
     add_bias(om,ofm,bias,l);
-    free(om);
 }

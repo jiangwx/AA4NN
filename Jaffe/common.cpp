@@ -1,55 +1,91 @@
 #include "CNN.h"
 #define CheckScale 0.01
 
-void load_fm(float* fm, layer l)
+void load_image(char* img_path, float* blob,float* mean)
 {
-    int len = l.ow* l.oh*l.oc;
+    IplImage *src = cvLoadImage(img_path);
+    CvSize size;
+    size.width = img_w;
+    size.height = img_h;
+    IplImage *dst = cvCreateImage(size, IPL_DEPTH_8U, 3);
+    cvResize(src, dst, CV_INTER_CUBIC);
 
+    unsigned char *data = (unsigned char *) dst->imageData;
+
+    for (int i = 0; i < dst->height; i++) {
+        for (int j = 0; j < dst->width; j++) {
+            blob[i * dst->widthStep / 3 + j]                 = (float) data[i * dst->widthStep + j *  dst->nChannels]-mean[i * dst->widthStep / 3 + j];
+            blob[i * dst->widthStep / 3 + j + img_w*img_h]   = (float) data[i * dst->widthStep + j *  dst->nChannels + 1]-mean[i * dst->widthStep / 3 + j+ img_w*img_h];
+            blob[i * dst->widthStep / 3 + j + 2*img_w*img_h] = (float) data[i * dst->widthStep + j *  dst->nChannels + 2]-mean[i * dst->widthStep / 3 + j + 2*img_w*img_h];
+        }
+    }
+}
+
+void load_mean_image(char* img_path, float* blob)
+{
+    IplImage *src = cvLoadImage(img_path);
+    CvSize size;
+    size.width = img_w;
+    size.height = img_h;
+    IplImage *dst = cvCreateImage(size, IPL_DEPTH_8U, 3);
+    cvResize(src, dst, CV_INTER_CUBIC);
+
+    unsigned char *data = (unsigned char *) dst->imageData;
+
+    for (int i = 0; i < dst->height; i++) {
+        for (int j = 0; j < dst->width; j++) {
+            blob[i * dst->widthStep / 3 + j]                 = (float) data[i * dst->widthStep + j *  dst->nChannels]-127;
+            blob[i * dst->widthStep / 3 + j + img_w*img_h]   = (float) data[i * dst->widthStep + j *  dst->nChannels + 1]-127;
+            blob[i * dst->widthStep / 3 + j + 2*img_w*img_h] = (float) data[i * dst->widthStep + j *  dst->nChannels + 2]-127;
+        }
+    }
+}
+
+void load_fm(float* fm, layer l, char* Net)
+{
     char nstr[50];
 
-    sprintf(nstr, "../blobs/%s.bb", l.name);
-
+    sprintf(nstr, "../%s/blobs/%s.bb", Net, l.name);
     FILE *fp = fopen(nstr, "rb");
-    fread(fm, 1, len * sizeof(float), fp);
+    fread(fm, 1, l.ow* l.oh*l.oc * sizeof(float), fp);
     fclose(fp);
 }
 
-void load_mean(float *mean, layer l)
+void load_mean(float *mean, layer l, char* Net)
 {
     char nstr[50];
     FILE *fp;
 
     fp = fopen(nstr, "rb");
-    sprintf(nstr, "/mnt/weight/%s.mn", l.name);
+    sprintf(nstr, "../%s/weights/%s.mn", Net, l.name);
     fp = fopen(nstr, "rb");
     fread(mean, 1, l.oc * sizeof(float), fp);
     fclose(fp);
 
-    sprintf(nstr, "/mnt/weight/%s.vs", l.name);
+    sprintf(nstr, "../%s/weights/%s.vs", Net, l.name);
     fp = fopen(nstr, "rb");
     fread(&mean[l.oc], 1, l.oc * sizeof(float), fp);
     fclose(fp);
 
-    sprintf(nstr, "/mnt/weight/%s.bs", l.name);
+    sprintf(nstr, "../%s/weights/%s.bs", Net, l.name);
     fp = fopen(nstr, "rb");
     fread(&mean[2 * l.oc], 1, l.oc * sizeof(float), fp);
     fclose(fp);
-
 }
 
-void load_weight(float *weight, layer l)
+void load_weight(float *weight, layer l, char* Net)
 {
     char nstr[50];
-    sprintf(nstr, "../weights/%s.wt", l.name);
+    sprintf(nstr, "../%s/weights/%s.wt", Net, l.name);
     FILE *fp = fopen(nstr, "rb");
     fread(weight, 1, l.ic*l.oc*l.k*l.k * sizeof(float), fp);
     fclose(fp);
 }
 
-void load_bias(float *bias, layer l)
+void load_bias(float *bias, layer l, char* Net)
 {
     char nstr[50];
-    sprintf(nstr, "../weights/%s.bs", l.name);
+    sprintf(nstr, "../%s/weights/%s.bs", Net, l.name);
     FILE *fp = fopen(nstr, "rb");
     fp = fopen(nstr, "rb");
     fread(bias, 1, l.oc * sizeof(float), fp);
@@ -107,14 +143,13 @@ void trans_matrix(float* in, float* out, int M, int N)//M: the origin rows, N: t
     }
 }
 
-void check_fm(float* fm, layer l)
+void check_fm(float* fm, layer l, char* Net)
 {
     int len = l.oc*l.ow*l.oh;
     float *tmp = (float *)malloc(sizeof(float)*len);
 
     char nstr[50];
-    sprintf(nstr, "../blobs/%s.bb", l.name);
-
+    sprintf(nstr, "../%s/blobs/%s.bb", Net, l.name);
     FILE *fp = fopen(nstr, "rb");
     fread(tmp, 1, len * sizeof(float), fp);
     fclose(fp);
@@ -131,10 +166,9 @@ void check_fm(float* fm, layer l)
     }
 
     if (err > 0)
-        printf("error cnt= %d, %s\n", err, l.name);
+        printf("%s %s error cnt= %d\n", Net, l.name, err);
     else
-        printf("correct %s \n", l.name);
+        printf("%s %s correct \n", Net, l.name);
 
     free(tmp);
 }
-

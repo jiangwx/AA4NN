@@ -9,34 +9,30 @@ void convolution(float *ifm, float *ofm, float *weight, float *bias, layer l)
             for (int oc = 0; oc < l.oc; oc++)
             {
                 float odata = 0;
-                int outcnt = oc * l.oh*l.ow + oh * l.ow + ow;
-                for (int id = 0; id < l.ic; id++)
+                int ofm_index = oc * l.oh*l.ow + oh * l.ow + ow;
+                for (int ic = 0; ic < l.ic; ic++)
                 {
-                    for (int wh = 0; wh < l.k; wh++)
+                    for(int kh = 0; kh < l.k; kh++)
                     {
-                        for (int ww = 0; ww < l.k; ww++)
+                        for (int kw = 0; kw < l.k; kw++)
                         {
-                            float ret = 0;
+                            float ret;
+                            int fw = ow*l.s - l.p + kw;
+                            int fh = oh*l.s - l.p + kh;
+                            int ifm_index = ic*l.ih*l.iw + fh*l.iw + fw;
+                            int wgt_index = oc * l.ic*l.k*l.k + ic * l.k* l.k + kh * l.k + kw;
 
-                            int xind = ow*l.s - l.p + ww;
-                            int yind = oh*l.s - l.p + wh;
-
-                            int incnt = id * l.ih*l.iw + yind *l.iw + xind;
-                            int weicnt = oc * l.ic*l.k*l.k + id * l.k* l.k + wh * l.k + ww;
-
-                            if ((xind < 0) || (xind >(l.iw - 1)) || (yind < 0) || (yind >(l.ih - 1)))
-                                ret = 0;
+							if( (fw<0) || (fh<0) || (fw>(l.iw-1)) || (fh>(l.ih-1)))
+                                ret=0;
                             else
-                                ret = ifm[incnt];
-                            ret *= weight[weicnt];
+                                ret = ifm[ifm_index];
+                            ret *= weight[wgt_index];
                             odata += ret;
                         }
                     }
                 }
-                odata += bias[oc];
-                ofm[outcnt] = odata;
+                ofm[ofm_index] = odata + bias[oc];
             }
         }
     }
 }
-
