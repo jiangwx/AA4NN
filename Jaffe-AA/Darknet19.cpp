@@ -163,106 +163,173 @@ void Darknet_init()
     image_blob = (float*)malloc(DNet[image].oc*DNet[image].oh*DNet[image].ow*sizeof(float));
 
     conv1_blob = (float*)malloc(DNet[conv1].oc*DNet[conv1].oh*DNet[conv1].ow*sizeof(float));
-    conv1_AA = new AAF[DNet[conv1].oc*DNet[conv1].oh*DNet[conv1].ow];
     conv1_weight = (float*)malloc(DNet[conv1].ic*DNet[conv1].oc*DNet[conv1].k*DNet[conv1].k*sizeof(float));
     conv1_bn = (float*)malloc(DNet[conv1].oc*3*sizeof(float));
 
     pool1_blob = (float*)malloc(DNet[pool1].oc*DNet[pool1].oh*DNet[pool1].ow*sizeof(float));
+
+    conv2_blob = (float*)malloc(DNet[conv2].oc*DNet[conv2].oh*DNet[conv2].ow*sizeof(float));
+    conv2_weight = (float*)malloc(DNet[conv2].ic*DNet[conv2].oc*DNet[conv2].k*DNet[conv2].k*sizeof(float));
+    conv2_bn = (float*)malloc(DNet[conv2].oc*3*sizeof(float));
+
+    pool2_blob = (float*)malloc(DNet[pool2].oc*DNet[pool2].oh*DNet[pool2].ow*sizeof(float));
+
+    conv3_blob = (float*)malloc(DNet[conv3].oc*DNet[conv3].oh*DNet[conv3].ow*sizeof(float));
+    conv3_weight = (float*)malloc(DNet[conv3].ic*DNet[conv3].oc*DNet[conv3].k*DNet[conv3].k*sizeof(float));
+    conv3_bn = (float*)malloc(DNet[conv3].oc*3*sizeof(float));
+
+    conv4_blob = (float*)malloc(DNet[conv4].oc*DNet[conv4].oh*DNet[conv4].ow*sizeof(float));
+    conv4_weight = (float*)malloc(DNet[conv4].ic*DNet[conv4].oc*DNet[conv4].k*DNet[conv4].k*sizeof(float));
+    conv4_bn = (float*)malloc(DNet[conv4].oc*3*sizeof(float));
+
+    conv5_blob = (float*)malloc(DNet[conv5].oc*DNet[conv5].oh*DNet[conv5].ow*sizeof(float));
+    conv5_weight = (float*)malloc(DNet[conv5].ic*DNet[conv5].oc*DNet[conv5].k*DNet[conv5].k*sizeof(float));
+    conv5_bn = (float*)malloc(DNet[conv5].oc*3*sizeof(float));
+
+    pool5_blob = (float*)malloc(DNet[pool5].oc*DNet[pool5].oh*DNet[pool5].ow*sizeof(float));
+
+    conv6_blob = (float*)malloc(DNet[conv6].oc*DNet[conv6].oh*DNet[conv6].ow*sizeof(float));
+    conv6_weight = (float*)malloc(DNet[conv6].ic*DNet[conv6].oc*DNet[conv6].k*DNet[conv6].k*sizeof(float));
+    conv6_bn = (float*)malloc(DNet[conv6].oc*3*sizeof(float));
+
+    conv7_blob = (float*)malloc(DNet[conv7].oc*DNet[conv7].oh*DNet[conv7].ow*sizeof(float));
+    conv7_weight = (float*)malloc(DNet[conv7].ic*DNet[conv7].oc*DNet[conv7].k*DNet[conv7].k*sizeof(float));
+    conv7_bn = (float*)malloc(DNet[conv7].oc*3*sizeof(float));
+
+    conv8_blob = (float*)malloc(DNet[conv8].oc*DNet[conv8].oh*DNet[conv8].ow*sizeof(float));
+    conv8_weight = (float*)malloc(DNet[conv8].ic*DNet[conv8].oc*DNet[conv8].k*DNet[conv8].k*sizeof(float));
+    conv8_bn = (float*)malloc(DNet[conv8].oc*3*sizeof(float));
+
+    pool8_blob = (float*)malloc(DNet[pool8].oc*DNet[pool8].oh*DNet[pool8].ow*sizeof(float));
+
+    conv9_blob = (float*)malloc(DNet[conv9].oc*DNet[conv9].oh*DNet[conv9].ow*sizeof(float));
+    conv9_weight = (float*)malloc(DNet[conv9].ic*DNet[conv9].oc*DNet[conv9].k*DNet[conv9].k*sizeof(float));
+    conv9_bn = (float*)malloc(DNet[conv9].oc*3*sizeof(float));
+
+    conv10_blob = (float*)malloc(DNet[conv10].oc*DNet[conv10].oh*DNet[conv10].ow*sizeof(float));
+    conv10_weight = (float*)malloc(DNet[conv10].ic*DNet[conv10].oc*DNet[conv10].k*DNet[conv10].k*sizeof(float));
+    conv10_bn = (float*)malloc(DNet[conv10].oc*3*sizeof(float));
+
+    conv11_blob = (float*)malloc(DNet[conv11].oc*DNet[conv11].oh*DNet[conv11].ow*sizeof(float));
+    conv11_weight = (float*)malloc(DNet[conv11].ic*DNet[conv11].oc*DNet[conv11].k*DNet[conv11].k*sizeof(float));
+    conv11_bn = (float*)malloc(DNet[conv11].oc*3*sizeof(float));
+
+    conv12_blob = (float*)malloc(DNet[conv12].oc*DNet[conv12].oh*DNet[conv12].ow*sizeof(float));
+    conv12_weight = (float*)malloc(DNet[conv12].ic*DNet[conv12].oc*DNet[conv12].k*DNet[conv12].k*sizeof(float));
+    conv12_bn = (float*)malloc(DNet[conv12].oc*3*sizeof(float));
+
+    conv13_blob = (float*)malloc(DNet[conv13].oc*DNet[conv13].oh*DNet[conv13].ow*sizeof(float));
+    conv13_weight = (float*)malloc(DNet[conv13].ic*DNet[conv13].oc*DNet[conv13].k*DNet[conv13].k*sizeof(float));
+    conv13_bn = (float*)malloc(DNet[conv13].oc*3*sizeof(float));
+
+    pool13_blob = (float*)malloc(DNet[pool13].oc*DNet[pool13].oh*DNet[pool13].ow*sizeof(float));
+
+    conv14_blob = (float*)malloc(DNet[conv14].oc*DNet[conv14].oh*DNet[conv14].ow*sizeof(float));
+    conv14_weight = (float*)malloc(DNet[conv14].ic*DNet[conv14].oc*DNet[conv14].k*DNet[conv14].k*sizeof(float));
+    conv14_bn = (float*)malloc(DNet[conv14].oc*3*sizeof(float));
+
+    conv15_blob = (float*)malloc(DNet[conv15].oc*DNet[conv15].oh*DNet[conv15].ow*sizeof(float));
+    conv15_weight = (float*)malloc(DNet[conv15].ic*DNet[conv15].oc*DNet[conv15].k*DNet[conv15].k*sizeof(float));
+    conv15_bn = (float*)malloc(DNet[conv15].oc*3*sizeof(float));
+
+    conv16_blob = (float*)malloc(DNet[conv16].oc*DNet[conv16].oh*DNet[conv16].ow*sizeof(float));
+    conv16_weight = (float*)malloc(DNet[conv16].ic*DNet[conv16].oc*DNet[conv16].k*DNet[conv16].k*sizeof(float));
+    conv16_bn = (float*)malloc(DNet[conv16].oc*3*sizeof(float));
+
+    conv17_blob = (float*)malloc(DNet[conv17].oc*DNet[conv17].oh*DNet[conv17].ow*sizeof(float));
+    conv17_weight = (float*)malloc(DNet[conv17].ic*DNet[conv17].oc*DNet[conv17].k*DNet[conv17].k*sizeof(float));
+    conv17_bn = (float*)malloc(DNet[conv17].oc*3*sizeof(float));
+
+    conv18_blob = (float*)malloc(DNet[conv18].oc*DNet[conv18].oh*DNet[conv18].ow*sizeof(float));
+    conv18_weight = (float*)malloc(DNet[conv18].ic*DNet[conv18].oc*DNet[conv18].k*DNet[conv18].k*sizeof(float));
+    conv18_bn = (float*)malloc(DNet[conv18].oc*3*sizeof(float));
+
+    pool18_blob = (float*)malloc(DNet[pool18].oc*DNet[pool18].oh*DNet[pool18].ow*sizeof(float));
+}
+
+void AA_Darknet_init()
+{
+    image_blob = (float*)malloc(DNet[image].oc*DNet[image].oh*DNet[image].ow*sizeof(float));
+
+    conv1_blob = (float*)malloc(DNet[conv1].oc*DNet[conv1].oh*DNet[conv1].ow*sizeof(float));
+    conv1_AA = new AAF[DNet[conv1].oc*DNet[conv1].oh*DNet[conv1].ow];
+    conv1_weight = (float*)malloc(DNet[conv1].ic*DNet[conv1].oc*DNet[conv1].k*DNet[conv1].k*sizeof(float));
+    conv1_bn = (float*)malloc(DNet[conv1].oc*3*sizeof(float));
+
 	pool1_AA = new AAF[DNet[pool1].oc*DNet[pool1].oh*DNet[pool1].ow];
 
-	conv2_blob = (float*)malloc(DNet[conv2].oc*DNet[conv2].oh*DNet[conv2].ow*sizeof(float));
     conv2_AA = new AAF[DNet[conv2].oc*DNet[conv2].oh*DNet[conv2].ow];
     conv2_weight = (float*)malloc(DNet[conv2].ic*DNet[conv2].oc*DNet[conv2].k*DNet[conv2].k*sizeof(float));
     conv2_bn = (float*)malloc(DNet[conv2].oc*3*sizeof(float));
 
-	pool2_blob = (float*)malloc(DNet[pool2].oc*DNet[pool2].oh*DNet[pool2].ow*sizeof(float));
 	pool2_AA = new AAF[DNet[pool2].oc*DNet[pool2].oh*DNet[pool2].ow];
 
-	conv3_blob = (float*)malloc(DNet[conv3].oc*DNet[conv3].oh*DNet[conv3].ow*sizeof(float));
     conv3_AA = new AAF[DNet[conv3].oc*DNet[conv3].oh*DNet[conv3].ow];
     conv3_weight = (float*)malloc(DNet[conv3].ic*DNet[conv3].oc*DNet[conv3].k*DNet[conv3].k*sizeof(float));
     conv3_bn = (float*)malloc(DNet[conv3].oc*3*sizeof(float));
-	
-	conv4_blob = (float*)malloc(DNet[conv4].oc*DNet[conv4].oh*DNet[conv4].ow*sizeof(float));
+
     conv4_AA = new AAF[DNet[conv4].oc*DNet[conv4].oh*DNet[conv4].ow];
     conv4_weight = (float*)malloc(DNet[conv4].ic*DNet[conv4].oc*DNet[conv4].k*DNet[conv4].k*sizeof(float));
     conv4_bn = (float*)malloc(DNet[conv4].oc*3*sizeof(float));
-	
-	conv5_blob = (float*)malloc(DNet[conv5].oc*DNet[conv5].oh*DNet[conv5].ow*sizeof(float));
+
     conv5_AA = new AAF[DNet[conv5].oc*DNet[conv5].oh*DNet[conv5].ow];
     conv5_weight = (float*)malloc(DNet[conv5].ic*DNet[conv5].oc*DNet[conv5].k*DNet[conv5].k*sizeof(float));
     conv5_bn = (float*)malloc(DNet[conv5].oc*3*sizeof(float));
 
-	pool5_blob = (float*)malloc(DNet[pool5].oc*DNet[pool5].oh*DNet[pool5].ow*sizeof(float));
 	pool5_AA = new AAF[DNet[pool5].oc*DNet[pool5].oh*DNet[pool5].ow];
 
-	conv6_blob = (float*)malloc(DNet[conv6].oc*DNet[conv6].oh*DNet[conv6].ow*sizeof(float));
     conv6_AA = new AAF[DNet[conv6].oc*DNet[conv6].oh*DNet[conv6].ow];
     conv6_weight = (float*)malloc(DNet[conv6].ic*DNet[conv6].oc*DNet[conv6].k*DNet[conv6].k*sizeof(float));
     conv6_bn = (float*)malloc(DNet[conv6].oc*3*sizeof(float));
-	
-	conv7_blob = (float*)malloc(DNet[conv7].oc*DNet[conv7].oh*DNet[conv7].ow*sizeof(float));
+
     conv7_AA = new AAF[DNet[conv7].oc*DNet[conv7].oh*DNet[conv7].ow];
     conv7_weight = (float*)malloc(DNet[conv7].ic*DNet[conv7].oc*DNet[conv7].k*DNet[conv7].k*sizeof(float));
     conv7_bn = (float*)malloc(DNet[conv7].oc*3*sizeof(float));
-	
-	conv8_blob = (float*)malloc(DNet[conv8].oc*DNet[conv8].oh*DNet[conv8].ow*sizeof(float));
+
     conv8_AA = new AAF[DNet[conv8].oc*DNet[conv8].oh*DNet[conv8].ow];
     conv8_weight = (float*)malloc(DNet[conv8].ic*DNet[conv8].oc*DNet[conv8].k*DNet[conv8].k*sizeof(float));
     conv8_bn = (float*)malloc(DNet[conv8].oc*3*sizeof(float));
-	
-	pool8_blob = (float*)malloc(DNet[pool8].oc*DNet[pool8].oh*DNet[pool8].ow*sizeof(float));
+
 	pool8_AA = new AAF[DNet[pool8].oc*DNet[pool8].oh*DNet[pool8].ow];
 
-	conv9_blob = (float*)malloc(DNet[conv9].oc*DNet[conv9].oh*DNet[conv9].ow*sizeof(float));
     conv9_AA = new AAF[DNet[conv9].oc*DNet[conv9].oh*DNet[conv9].ow];
     conv9_weight = (float*)malloc(DNet[conv9].ic*DNet[conv9].oc*DNet[conv9].k*DNet[conv9].k*sizeof(float));
     conv9_bn = (float*)malloc(DNet[conv9].oc*3*sizeof(float));
-	
-	conv10_blob = (float*)malloc(DNet[conv10].oc*DNet[conv10].oh*DNet[conv10].ow*sizeof(float));
+
     conv10_AA = new AAF[DNet[conv10].oc*DNet[conv10].oh*DNet[conv10].ow];
     conv10_weight = (float*)malloc(DNet[conv10].ic*DNet[conv10].oc*DNet[conv10].k*DNet[conv10].k*sizeof(float));
     conv10_bn = (float*)malloc(DNet[conv10].oc*3*sizeof(float));
-	
-	conv11_blob = (float*)malloc(DNet[conv11].oc*DNet[conv11].oh*DNet[conv11].ow*sizeof(float));
+
     conv11_AA = new AAF[DNet[conv11].oc*DNet[conv11].oh*DNet[conv11].ow];
     conv11_weight = (float*)malloc(DNet[conv11].ic*DNet[conv11].oc*DNet[conv11].k*DNet[conv11].k*sizeof(float));
     conv11_bn = (float*)malloc(DNet[conv11].oc*3*sizeof(float));
-	
-	conv12_blob = (float*)malloc(DNet[conv12].oc*DNet[conv12].oh*DNet[conv12].ow*sizeof(float));
+
     conv12_AA = new AAF[DNet[conv12].oc*DNet[conv12].oh*DNet[conv12].ow];
     conv12_weight = (float*)malloc(DNet[conv12].ic*DNet[conv12].oc*DNet[conv12].k*DNet[conv12].k*sizeof(float));
     conv12_bn = (float*)malloc(DNet[conv12].oc*3*sizeof(float));
-	
-	conv13_blob = (float*)malloc(DNet[conv13].oc*DNet[conv13].oh*DNet[conv13].ow*sizeof(float));
+
     conv13_AA = new AAF[DNet[conv13].oc*DNet[conv13].oh*DNet[conv13].ow];
     conv13_weight = (float*)malloc(DNet[conv13].ic*DNet[conv13].oc*DNet[conv13].k*DNet[conv13].k*sizeof(float));
     conv13_bn = (float*)malloc(DNet[conv13].oc*3*sizeof(float));
 
-	pool13_blob = (float*)malloc(DNet[pool13].oc*DNet[pool13].oh*DNet[pool13].ow*sizeof(float));
 	pool13_AA = new AAF[DNet[pool13].oc*DNet[pool13].oh*DNet[pool13].ow];
 
-	conv14_blob = (float*)malloc(DNet[conv14].oc*DNet[conv14].oh*DNet[conv14].ow*sizeof(float));
     conv14_AA = new AAF[DNet[conv14].oc*DNet[conv14].oh*DNet[conv14].ow];
     conv14_weight = (float*)malloc(DNet[conv14].ic*DNet[conv14].oc*DNet[conv14].k*DNet[conv14].k*sizeof(float));
     conv14_bn = (float*)malloc(DNet[conv14].oc*3*sizeof(float));
-	
-	conv15_blob = (float*)malloc(DNet[conv15].oc*DNet[conv15].oh*DNet[conv15].ow*sizeof(float));
+
     conv15_AA = new AAF[DNet[conv15].oc*DNet[conv15].oh*DNet[conv15].ow];
     conv15_weight = (float*)malloc(DNet[conv15].ic*DNet[conv15].oc*DNet[conv15].k*DNet[conv15].k*sizeof(float));
     conv15_bn = (float*)malloc(DNet[conv15].oc*3*sizeof(float));
-	
-	conv16_blob = (float*)malloc(DNet[conv16].oc*DNet[conv16].oh*DNet[conv16].ow*sizeof(float));
+
     conv16_AA = new AAF[DNet[conv16].oc*DNet[conv16].oh*DNet[conv16].ow];
     conv16_weight = (float*)malloc(DNet[conv16].ic*DNet[conv16].oc*DNet[conv16].k*DNet[conv16].k*sizeof(float));
     conv16_bn = (float*)malloc(DNet[conv16].oc*3*sizeof(float));
-	
-	conv17_blob = (float*)malloc(DNet[conv17].oc*DNet[conv17].oh*DNet[conv17].ow*sizeof(float));
+
     conv17_AA = new AAF[DNet[conv17].oc*DNet[conv17].oh*DNet[conv17].ow];
     conv17_weight = (float*)malloc(DNet[conv17].ic*DNet[conv17].oc*DNet[conv17].k*DNet[conv17].k*sizeof(float));
     conv17_bn = (float*)malloc(DNet[conv17].oc*3*sizeof(float));
-	
-	conv18_blob = (float*)malloc(DNet[conv18].oc*DNet[conv18].oh*DNet[conv18].ow*sizeof(float));
+
     conv18_AA = new AAF[DNet[conv18].oc*DNet[conv18].oh*DNet[conv18].ow];
     conv18_weight = (float*)malloc(DNet[conv18].ic*DNet[conv18].oc*DNet[conv18].k*DNet[conv18].k*sizeof(float));
     conv18_bn = (float*)malloc(DNet[conv18].oc*3*sizeof(float));
@@ -278,104 +345,171 @@ void Darknet_close()
     free(conv1_blob);
     free(conv1_weight);
     free(conv1_bn);
-    delete []conv1_AA;
 
     free(pool1_blob);
-    delete []pool1_AA;
 	
 	free(conv2_blob);
     free(conv2_weight);
     free(conv2_bn);
-    delete []conv2_AA;
 	
     free(pool2_blob);
-    delete []pool2_AA;
 
 	free(conv3_blob);
     free(conv3_weight);
     free(conv3_bn);
-    delete []conv3_AA;
 	
 	free(conv4_blob);
     free(conv4_weight);
     free(conv4_bn);
-    delete []conv4_AA;
 	
 	free(conv5_blob);
     free(conv5_weight);
     free(conv5_bn);
-    delete []conv5_AA;
 	
     free(pool5_blob);
-    delete []pool5_AA;
 
 	free(conv6_blob);
     free(conv6_weight);
     free(conv6_bn);
-    delete []conv6_AA;
 	
 	free(conv7_blob);
     free(conv7_weight);
     free(conv7_bn);
-    delete []conv7_AA;
 	
 	free(conv8_blob);
     free(conv8_weight);
     free(conv8_bn);
-    delete []conv8_AA;
 	
     free(pool8_blob);
-    delete []pool8_AA;
 
 	free(conv9_blob);
     free(conv9_weight);
     free(conv9_bn);
-    delete []conv9_AA;
 	
 	free(conv10_blob);
     free(conv10_weight);
     free(conv10_bn);
-    delete []conv10_AA;
 	
 	free(conv11_blob);
     free(conv11_weight);
     free(conv11_bn);
-    delete []conv11_AA;
 	
 	free(conv12_blob);
     free(conv12_weight);
     free(conv12_bn);
-    delete []conv12_AA;
 	
 	free(conv13_blob);
     free(conv13_weight);
     free(conv13_bn);
-    delete []conv13_AA;
 	
     free(pool13_blob);
-    delete []pool13_AA;
 
 	free(conv14_blob);
     free(conv14_weight);
     free(conv14_bn);
-    delete []conv14_AA;
 	
 	free(conv15_blob);
     free(conv15_weight);
     free(conv15_bn);
-    delete []conv15_AA;
 	
 	free(conv16_blob);
     free(conv16_weight);
     free(conv16_bn);
-    delete []conv16_AA;
 	
 	free(conv17_blob);
     free(conv17_weight);
     free(conv17_bn);
-    delete []conv17_AA;
 	
 	free(conv18_blob);
+    free(conv18_weight);
+    free(conv18_bn);
+
+    free(pool18_blob);
+}
+
+void AA_Darknet_close()
+{
+    free(image_blob);
+
+    free(conv1_blob);
+    free(conv1_weight);
+    free(conv1_bn);
+    delete []conv1_AA;
+
+    delete []pool1_AA;
+
+    free(conv2_weight);
+    free(conv2_bn);
+    delete []conv2_AA;
+
+    delete []pool2_AA;
+
+    free(conv3_weight);
+    free(conv3_bn);
+    delete []conv3_AA;
+
+    free(conv4_weight);
+    free(conv4_bn);
+    delete []conv4_AA;
+
+    free(conv5_weight);
+    free(conv5_bn);
+    delete []conv5_AA;
+
+    delete []pool5_AA;
+
+    free(conv6_weight);
+    free(conv6_bn);
+    delete []conv6_AA;
+
+    free(conv7_weight);
+    free(conv7_bn);
+    delete []conv7_AA;
+
+    free(conv8_weight);
+    free(conv8_bn);
+    delete []conv8_AA;
+
+    delete []pool8_AA;
+
+    free(conv9_weight);
+    free(conv9_bn);
+    delete []conv9_AA;
+
+    free(conv10_weight);
+    free(conv10_bn);
+    delete []conv10_AA;
+
+    free(conv11_weight);
+    free(conv11_bn);
+    delete []conv11_AA;
+
+    free(conv12_weight);
+    free(conv12_bn);
+    delete []conv12_AA;
+
+    free(conv13_weight);
+    free(conv13_bn);
+    delete []conv13_AA;
+
+    delete []pool13_AA;
+
+    free(conv14_weight);
+    free(conv14_bn);
+    delete []conv14_AA;
+
+    free(conv15_weight);
+    free(conv15_bn);
+    delete []conv15_AA;
+
+    free(conv16_weight);
+    free(conv16_bn);
+    delete []conv16_AA;
+
+    free(conv17_weight);
+    free(conv17_bn);
+    delete []conv17_AA;
+
     free(conv18_weight);
     free(conv18_bn);
     delete []conv18_AA;
@@ -577,7 +711,7 @@ int AA_Darknet19(float* input, char* image_path)
     AA_avgpool(conv18_AA,pool18_AA,DNet[pool18]);
     std::cout << "AA pool18 Done" << std::endl;
 
-    AA_remove(pool1_AA,pool1_blob,DNet[pool18]);
+    AA_remove(pool18_AA,pool18_blob,DNet[pool18]);
     int label = max(pool18_blob, DNet[pool18]);
 
     char AA_output_path[30];
@@ -585,7 +719,7 @@ int AA_Darknet19(float* input, char* image_path)
     std::ofstream AA_output(AA_output_path);
     for (int i=0; i <  DNet[pool18].oc*DNet[pool18].oh*DNet[pool18].ow; i++)
     {
-        AA_output << pool18_blob[i] << std::endl;
+        AA_output << pool18_AA[i] << std::endl;
     }
     AA_output.close();
 

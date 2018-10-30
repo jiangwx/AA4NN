@@ -1,5 +1,5 @@
 #include "Darknet19.h"
-#define TEST 10
+#define TEST 30
 char synset[30][35] = {
         {"A-line-loose-dress\0"},
         {"Canvas-shoes\0"},
@@ -14,7 +14,7 @@ char synset[30][35] = {
         {"leather-loafer-shoes\0"},
         {"leisure-dress\0"},
         {"leisure-pants\0"},
-        {"30longsleeve-dress-for-fall\0"},
+        {"longsleeve-dress-for-fall\0"},
         {"mid-long-boots\0"},
         {"outdoor-xiaobao\0"},
         {"outerwear-vest\0"},
@@ -32,10 +32,9 @@ char synset[30][35] = {
         {"wallets\0"},
         {"women-Sports-jackets\0"},
 };
-/*
+
 int main(int argc, char *argv[])
 {
-	FILE *bb;
     char* image_path = argv[1];
     char* mean_path = argv[2];
     float *image = (float *)malloc(sizeof(float)*img_w*img_h*3);
@@ -45,59 +44,12 @@ int main(int argc, char *argv[])
     load_mean_image(mean_path,mean);
     load_image(image_path, image, mean);
 
-    Darknet_init();
+    AA_Darknet_init();
     load_DNet();
-    label = Darknet19(image);
+    label = AA_Darknet19(image, image_path);
 
     printf("%s %s\n", image_path, synset[label]);
 
-    Darknet_close();
+    AA_Darknet_close();
     return 0;
-}*/
-
-int main(int argc, char **argv)
-{
-    int label;
-    FILE *bb;
-    char* image_folder = argv[1];
-    char mean_path[50];
-    char image_path[50];
-
-    float *image = (float *)malloc(sizeof(float)*img_w*img_h*3);
-    float *mean = (float *)malloc(sizeof(float)*img_w*img_h*3);
-
-    sprintf(mean_path, "%s/mean.jpg", image_folder);
-    load_mean_image(mean_path,mean);
-    Darknet_init();
-    load_DNet();
-
-    for(int i=1;i<TEST+1;i++) {
-        sprintf(image_path, "%s/%08d.jpg", image_folder, i);
-        load_image(image_path, image, mean);
-        label = AA_Darknet19(image,image_path);
-        printf("%08d.jpg %s\n", i, synset[label]);
-    }
-    Darknet_close();
 }
-/*
-int main(int argc, char **argv)
-{
-    int label;
-    FILE *bb;
-    char* image_folder = argv[1];
-    char image_path[50];
-    float *blob = (float*)malloc(sizeof(float)*img_w*img_h*3);
-
-    Darknet_init();
-    load_DNet();
-
-    for(int i=1;i<TEST+1;i++) {
-        sprintf(image_path, "%s/%08d.bb", image_folder, i);
-        bb = fopen(image_path, "rb");
-        fread(blob,sizeof(float),img_w*img_h*3,bb);
-        label = Darknet19(blob);
-        printf("%08d.jpg %s\n", i, synset[label]);
-    }
-    fclose(bb);
-}
-*/
